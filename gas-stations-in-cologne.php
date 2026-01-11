@@ -86,9 +86,9 @@ if (! class_exists('Gas_Stations')) {
 
 if (class_exists('Gas_Stations')) {
 
-	//register_activation_hook(__FILE__, array('Gas_Stations', 'activate'));
-	//register_deactivation_hook(__FILE__, array('Gas_Stations', 'deactivate'));
-	//register_uninstall_hook(__FILE__, array('Gas_Stations', 'uninstall'));
+	register_activation_hook(__FILE__, array('Gas_Stations', 'activate'));
+	register_deactivation_hook(__FILE__, array('Gas_Stations', 'deactivate'));
+	register_uninstall_hook(__FILE__, array('Gas_Stations', 'uninstall'));
 
-	$vs_slider = new Gas_Stations();
+	$gas_stations = new Gas_Stations();
 }
