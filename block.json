@@ -4,12 +4,19 @@
 	"title": "Gas Stations in Cologne",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "Example block written with ESNext standard and JSX support – build step required.",
+	"description": "Test assignment for Scopevisio.",
+	"keywords": [ "gas", "station" ],
 	"supports": {
 		"html": false
 	},
 	"textdomain": "gas-stations-in-cologne",
 	"editorScript": "file:./build/index.js",
 	"editorStyle": "file:./build/index.css",
-	"style": "file:./build/style-index.css"
+	"style": "file:./build/style-index.css",
+	"attributes": {
+		"columns": {
+			"type": "number",
+			"default": 2
+		}
+	}
 }
