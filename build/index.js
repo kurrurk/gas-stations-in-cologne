@@ -56,11 +56,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
 /* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
 /* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/save.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)('create-block/gas-stations-in-cologne', {
+  icon: {
+    src: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("svg", {
+      fill: "currentColor",
+      width: "20",
+      height: "20",
+      viewBox: "0 0 512 512",
+      xmlns: "http://www.w3.org/2000/svg",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("path", {
+        d: "M117.5 31.5c-19.651 5.485-32.151 18.152-37.5 38l-1 318c-7.623 4.633-12.623 11.3-15 20-.667 16-.667 32 0 48 3.167 12.5 11 20.333 23.5 23.5 85.333.667 170.667.667 256 0 12.5-3.167 20.333-11 23.5-23.5.667-16 .667-32 0-48-2.377-8.7-7.377-15.367-15-20a5926.287 5926.287 0 0 1 0-154 41.056 41.056 0 0 1 9 6 59.043 59.043 0 0 1 5 9 2258.254 2258.254 0 0 1 2 91c5.706 19.781 18.873 30.448 39.5 32 20.627-1.552 33.794-12.219 39.5-32 .667-64.667.667-129.333 0-194-1.996-7.658-5.33-14.658-10-21L394.5 82a28.218 28.218 0 0 0-10.5-3.5c-14.606 3.208-19.273 11.875-14 26a714.205 714.205 0 0 1 44 46 4122.278 4122.278 0 0 1 1 180 14.444 14.444 0 0 1-2.5 5.5c-6.468 3.18-10.634 1.347-12.5-5.5l-1-86c-5.753-25.587-21.586-40.254-47.5-44 .167-43.668 0-87.335-.5-131-5.167-19.833-17.667-32.333-37.5-37.5-65.332-.5-130.666-.667-196-.5zm16.65 55.45h157.8c5.95 0 10.75 4.8 10.75 10.75v85.35c0 5.95-4.8 10.75-10.75 10.75h-157.8c-5.95 0-10.75-4.8-10.75-10.75V97.7c0-5.95 4.8-10.75 10.75-10.75z"
+      })
+    })
+  },
   edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
   save: _save__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
