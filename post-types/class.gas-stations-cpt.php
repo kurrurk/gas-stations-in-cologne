@@ -10,13 +10,14 @@ if (! class_exists('Gas_Stations_Post_Type')) {
 		public function __construct()
 		{
 			add_action('init', array($this, 'create_post_type'));
+			add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 		}
 
 		public function create_post_type()
 		{
 
 			register_post_type(
-				'gas-stations',
+				'gas-station',
 				array(
 					'label' => 'Gas Station',
 					'description' => 'Custom Post Type for Gas Stations',
@@ -41,6 +42,23 @@ if (! class_exists('Gas_Stations_Post_Type')) {
 					//'register_meta_box_cd' => array( $this, 'add_meta_boxes' ),
 				)
 			);
+		}
+
+		public function add_meta_boxes()
+		{
+			add_meta_box(
+				'gas_station_meta_box',
+				'Link Options',
+				array($this, 'add_inner_meta_box'),
+				'gas-station',
+				'normal',
+				'high'
+			);
+		}
+
+		public function add_inner_meta_box($post)
+		{
+			require_once(GAS_STATIONS_PATH . 'views/gas-stations_metabox.php');
 		}
 	}
 }
