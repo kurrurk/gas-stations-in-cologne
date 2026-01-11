@@ -29,7 +29,8 @@
 	"dependencies": {
 		"@wordpress/block-editor": "latest",
 		"@wordpress/blocks": "latest",
-		"@wordpress/i18n": "latest"
+		"@wordpress/i18n": "latest",
+		"bootstrap": "^5.3.8"
 	},
 	"devDependencies": {
 		"@wordpress/eslint-plugin": "^23.0.0",
