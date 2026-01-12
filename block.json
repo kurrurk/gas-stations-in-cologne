@@ -7,7 +7,11 @@
 	"description": "Test assignment for Scopevisio.",
 	"keywords": [ "gas", "station" ],
 	"supports": {
-		"html": false
+		"html": false,
+		"spacing": {
+			"padding": true
+		},
+		"align": [ "wide", "full" ]
 	},
 	"textdomain": "gas-stations-in-cologne",
 	"editorScript": "file:./build/index.js",
@@ -16,7 +20,7 @@
 	"attributes": {
 		"columns": {
 			"type": "number",
-			"default": 2
+			"default": 3
 		}
 	}
 }

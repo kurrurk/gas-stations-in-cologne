@@ -44,7 +44,18 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function Edit() {
+function Edit({
+  attributes,
+  setAttributes
+}) {
+  const {
+    columns
+  } = attributes;
+  const onChangeColumns = newColumns => {
+    setAttributes({
+      columns: newColumns
+    });
+  };
   const [search, setSearch] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [sortBy, setSortBy] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('address');
   const [sortOrder, setSortOrder] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('asc');
@@ -78,81 +89,108 @@ function Edit() {
     if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
     return 0;
   });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-    ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({
-      className: `container border border-info rounded-1 bg-light`
-    }),
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-      className: "border-bottom border-info p-1",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
-        label: "Search by address",
-        value: search,
-        onChange: setSearch,
-        placeholder: "Enter address..."
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
-        label: "Sort by",
-        value: sortBy,
-        options: [{
-          label: 'Address',
-          value: 'address'
-        },
-        // { label: 'Distance', value: 'distance' },
-        {
-          label: 'ID',
-          value: 'id'
-        }],
-        onChange: setSortBy
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
-        label: "Order",
-        value: sortOrder,
-        options: [{
-          label: 'Ascending',
-          value: 'asc'
-        }, {
-          label: 'Descending',
-          value: 'desc'
-        }],
-        onChange: setSortOrder
-      })]
-    }), !posts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-      children: "Loading\u2026"
-    }), posts && posts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
-      children: "No posts found for this post type."
-    }), posts && posts.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "gas-stations-grid row w-100 m-0 d-flex flex-wrap",
-      children: sortedPosts.map(post => {
-        const meta = post.meta || {};
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-          className: "col-4 p-1",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-            className: "card border-info mb-3 p-0",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-              className: "card-header",
-              dangerouslySetInnerHTML: {
-                __html: post.title.rendered
-              }
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
-              className: "card-body",
-              children: [meta['gas-station_address'] && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("h5", {
-                className: "card-title",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("strong", {
-                  children: "Address:"
-                }), ' ', meta['gas-station_address']]
-              }), meta['gas-station_geometry_x'] && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
-                className: "card-text",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("strong", {
-                  children: "X:"
-                }), ' ', meta['gas-station_geometry_x']]
-              }), meta['gas-station_geometry_y'] && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
-                className: "card-text",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("strong", {
-                  children: "Y:"
-                }), ' ', meta['gas-station_geometry_y']]
-              })]
-            })]
-          })
-        }, post.id);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
+        title: "Layout",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
+          label: "Columns",
+          value: columns,
+          options: [{
+            label: '1 column',
+            value: 12
+          }, {
+            label: '2 columns',
+            value: 6
+          }, {
+            label: '3 columns',
+            value: 4
+          }, {
+            label: '4 columns',
+            value: 3
+          }, {
+            label: '6 columns',
+            value: 2
+          }],
+          onChange: onChangeColumns
+        })
       })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({
+        className: `container border border-info rounded-1 bg-light`
+      }),
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        className: "border-bottom border-info p-1",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
+          label: "Search by address",
+          value: search,
+          onChange: setSearch,
+          placeholder: "Enter address..."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
+          label: "Sort by",
+          value: sortBy,
+          options: [{
+            label: 'Address',
+            value: 'address'
+          },
+          // { label: 'Distance', value: 'distance' },
+          {
+            label: 'ID',
+            value: 'id'
+          }],
+          onChange: setSortBy
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.SelectControl, {
+          label: "Order",
+          value: sortOrder,
+          options: [{
+            label: 'Ascending',
+            value: 'asc'
+          }, {
+            label: 'Descending',
+            value: 'desc'
+          }],
+          onChange: setSortOrder
+        })]
+      }), !posts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+        children: "Loading\u2026"
+      }), posts && posts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+        children: "No posts found for this post type."
+      }), posts && posts.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "gas-stations-grid row w-100 m-0 d-flex flex-wrap",
+        children: sortedPosts.map(post => {
+          const meta = post.meta || {};
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+            className: `col-${columns} p-1`,
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              className: "card border-info mb-3 p-0",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                className: "card-header",
+                dangerouslySetInnerHTML: {
+                  __html: post.title.rendered
+                }
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+                className: "card-body",
+                children: [meta['gas-station_address'] && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("h5", {
+                  className: "card-title",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("strong", {
+                    children: "Address:"
+                  }), ' ', meta['gas-station_address']]
+                }), meta['gas-station_geometry_x'] && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+                  className: "card-text",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("strong", {
+                    children: "X:"
+                  }), ' ', meta['gas-station_geometry_x']]
+                }), meta['gas-station_geometry_y'] && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("p", {
+                  className: "card-text",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("strong", {
+                    children: "Y:"
+                  }), ' ', meta['gas-station_geometry_y']]
+                })]
+              })]
+            })
+          }, post.id);
+        })
+      })]
     })]
   });
 }

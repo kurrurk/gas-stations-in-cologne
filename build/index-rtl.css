@@ -1321,6 +1321,6 @@ textarea.form-control-lg{min-height:calc(1.5em + 1rem + calc(var(--bs-border-wid
  *
  * Replace them with your own styles or remove the file completely.
  */
-.wp-block-create-block-gas-stations-in-cologne .components-base-control-label {
+.wp-block-create-block-gas-stations-in-cologne .components-base-control label {
   color: #000;
 }
