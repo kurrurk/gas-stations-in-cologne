@@ -34,8 +34,15 @@ if (! class_exists('Gas_Stations')) {
 		{
 			$this->define_constants();
 
+			require_once(GAS_STATIONS_PATH . 'functions/functions.php');
+
+			add_action('admin_menu', array($this, 'add_menu'));
+
 			require_once(GAS_STATIONS_PATH . 'post-types/class.gas-stations-cpt.php');
 			$Gas_Stations_Post_Type = new Gas_Stations_Post_Type();
+
+			require_once(GAS_STATIONS_PATH . 'class.gas-stations-settings.php');
+			$Gas_Stations_Settings = new Gas_Stations_Settings();
 
 			add_action('init', array($this, 'create_block_gas_stations_in_cologne_block_init'));
 		}
@@ -59,23 +66,71 @@ if (! class_exists('Gas_Stations')) {
 		public static function deactivate()
 		{
 			flush_rewrite_rules();
-			//unregister_post_type( 'vs-slider' );
+			unregister_post_type('gas-station');
 		}
 
 		public static function uninstall()
 		{
-			//     delete_option( 'vs_slider_options' );
+			delete_option('gas_stations_options');
 
-			//     $posts = get_posts( array(
-			//         'post_type' => 'vs-slider',
-			//         'numberposts' => -1,
-			//         'post_status' => 'any'
-			//     ) );
+			$posts = get_posts(array(
+				'post_type' => 'gas-station',
+				'numberposts' => -1,
+				'post_status' => 'any'
+			));
 
-			//     foreach ( $posts as $post ) {
-			//         wp_delete_post( $post->ID, true );
-			//     }
+			foreach ($posts as $post) {
+				wp_delete_post($post->ID, true);
+			}
 		}
+
+		public function add_menu()
+		{
+			add_menu_page( // add_theme_page // add_options_page
+				'Gas Stations Options',
+				'Gas Stations',
+				'manage_options',
+				'gas-stations-admin',
+				array($this, 'gas_stations_settings_page'),
+				'data:image/svg+xml;base64,' . base64_encode(file_get_contents(GAS_STATIONS_URL . 'assets/images/tankstelle.svg')),
+
+				10
+			);
+
+			add_submenu_page(
+				'gas-stations-admin', // 'edit-comments.php' Example of existing parent slug
+				'Manage Gas Stations',
+				'Manage Gas Stations',
+				'manage_options',
+				'edit.php?post_type=gas-station',
+				null,
+				null
+			);
+
+			add_submenu_page(
+				'gas-stations-admin',
+				'Add New Gas Station',
+				'Add New Gas Station',
+				'manage_options',
+				'post-new.php?post_type=gas-station',
+				null,
+				null
+			);
+		}
+
+		public function gas_stations_settings_page()
+		{
+
+			if (! current_user_can('manage_options')) {
+				return;
+			}
+			if (isset($_GET['settings-updated'])) {
+				add_settings_error('gas_stations_options', 'gas_stations_message', 'Settings Saved', 'updated');
+			}
+			settings_errors('gas_stations_options');
+			require_once(GAS_STATIONS_PATH . 'views/settings-page.php');
+		}
+
 
 		public function create_block_gas_stations_in_cologne_block_init()
 		{

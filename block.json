@@ -1,7 +1,7 @@
 {
 	"apiVersion": 2,
 	"name": "create-block/gas-stations-in-cologne",
-	"title": "Gas Stations in Cologne",
+	"title": "Gas Stations",
 	"category": "widgets",
 	"icon": "smiley",
 	"description": "Test assignment for Scopevisio.",
