@@ -29,6 +29,9 @@
 	"dependencies": {
 		"@wordpress/block-editor": "latest",
 		"@wordpress/blocks": "latest",
+		"@wordpress/components": "^31.0.0",
+		"@wordpress/data": "^10.37.0",
+		"@wordpress/element": "^6.37.0",
 		"@wordpress/i18n": "latest",
 		"bootstrap": "^5.3.8"
 	},
@@ -41,5 +44,13 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.7",
 		"stylelint": "^16.26.1"
-	}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kurrurk/gas-stations-in-cologne.git"
+	},
+	"bugs": {
+		"url": "https://github.com/kurrurk/gas-stations-in-cologne/issues"
+	},
+	"homepage": "https://github.com/kurrurk/gas-stations-in-cologne#readme"
 }

@@ -30,7 +30,7 @@ if (! class_exists('Gas_Stations_Post_Type')) {
 						'singular_name' => 'Gas Station'
 					),
 					'public' => true,
-					'supports' => array('title', 'editor', 'thumbnail'),
+					'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
 					'herearchial' => false,
 					'show_ui' => true,
 					'show_in_menu' => false,
@@ -46,6 +46,26 @@ if (! class_exists('Gas_Stations_Post_Type')) {
 					//'register_meta_box_cd' => array( $this, 'add_meta_boxes' ),
 				)
 			);
+
+			register_post_meta('gas-station', 'gas-station_address', [
+				'type'         => 'string',
+				'show_in_rest' => true,
+			]);
+
+			register_post_meta('gas-station', 'gas-station_object_id', [
+				'type'         => 'number',
+				'show_in_rest' => true,
+			]);
+
+			register_post_meta('gas-station', 'gas-station_geometry_x', [
+				'type'         => 'number',
+				'show_in_rest' => true,
+			]);
+
+			register_post_meta('gas-station', 'gas-station_geometry_y', [
+				'type'         => 'number',
+				'show_in_rest' => true,
+			]);
 		}
 
 		public function add_meta_boxes()
