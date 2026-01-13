@@ -56,6 +56,8 @@ function Edit({
       columns: newColumns
     });
   };
+  const [sortAddress, setSortAddress] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const [coords, setCoords] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [search, setSearch] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
   const [sortBy, setSortBy] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('address');
   const [sortOrder, setSortOrder] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('asc');
@@ -67,6 +69,14 @@ function Edit({
     const address = String(post.meta?.['gas-station_address'] || '').toLowerCase();
     return address.includes(search.toLowerCase());
   });
+  function getDistanceKm(lat1, lng1, lat2, lng2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
   const sortedPosts = [...filteredPosts].sort((a, b) => {
     let valueA;
     let valueB;
@@ -76,9 +86,10 @@ function Edit({
         valueB = Number(b.meta?.['gas-station_object_id'] || 0);
         break;
       case 'distance':
-        // пример: используем X как "distance"
-        // valueA = Number( a.meta?.['gas-station_geometry_x'] || 0 );
-        // valueB = Number( b.meta?.['gas-station_geometry_x'] || 0 );
+        if (coords) {
+          valueA = getDistanceKm(coords.lat, coords.lng, Number(a.meta?.['gas-station_geometry_y'] || 0), Number(a.meta?.['gas-station_geometry_x'] || 0));
+          valueB = getDistanceKm(coords.lat, coords.lng, Number(b.meta?.['gas-station_geometry_y'] || 0), Number(b.meta?.['gas-station_geometry_x'] || 0));
+        }
         break;
       case 'address':
       default:
@@ -89,6 +100,31 @@ function Edit({
     if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
     return 0;
   });
+  const fetchCoords = async value => {
+    if (!value) return;
+    try {
+      const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(value)}&key=AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw`);
+      const data = await res.json();
+      if (!data.results || !data.results.length) {
+        throw new Error('Address not found');
+      }
+      const location = data.results[0].geometry.location;
+      setCoords({
+        lat: location.lat,
+        lng: location.lng
+      });
+    } catch (err) {
+      setCoords(null);
+    }
+  };
+  let debounceTimer;
+  const handleChange = value => {
+    setSortAddress(value);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      fetchCoords(value);
+    }, 500);
+  };
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.PanelBody, {
@@ -132,9 +168,10 @@ function Edit({
           options: [{
             label: 'Address',
             value: 'address'
-          },
-          // { label: 'Distance', value: 'distance' },
-          {
+          }, {
+            label: 'Distance',
+            value: 'distance'
+          }, {
             label: 'ID',
             value: 'id'
           }],
@@ -150,11 +187,18 @@ function Edit({
             value: 'desc'
           }],
           onChange: setSortOrder
+        }), sortBy === 'distance' && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_5__.TextControl, {
+          label: "Address to calculate distance",
+          value: sortAddress,
+          onChange: handleChange,
+          placeholder: "Enter address..."
         })]
       }), !posts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
         children: "Loading\u2026"
       }), posts && safePosts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
         children: "No posts found for this post type."
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        id: "gas-stations-map"
       }), posts && safePosts.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "gas-stations-grid row w-100 m-0 d-flex flex-wrap",
         children: sortedPosts.map(post => {

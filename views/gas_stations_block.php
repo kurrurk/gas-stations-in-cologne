@@ -23,10 +23,6 @@
 									?>>Descending</option>
 		</select>
 
-		<button type="submit" class="btn btn-primary">
-			Apply
-		</button>
-
 	</form>
 	<div class="gas-results gas-stations-grid row w-100 m-0 d-flex flex-wrap">
 

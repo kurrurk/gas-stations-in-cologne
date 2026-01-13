@@ -48,6 +48,7 @@ if (! class_exists('Gas_Stations')) {
 			$Gas_Stations_Block_List = new Gas_Stations_Block_List();
 
 			add_action('wp_enqueue_scripts', array($this, 'register_scripts'));
+			add_action('admin_enqueue_scripts', array($this, 'register_admin_scripts'), 999);
 		}
 
 		public function define_constants()
@@ -160,6 +161,27 @@ if (! class_exists('Gas_Stations')) {
 				filemtime(GAS_STATIONS_PATH . 'assets/css/bootstrap.min.css'),
 				'all'
 			);
+
+			wp_enqueue_script(
+				'google-maps',
+				'https://maps.googleapis.com/maps/api/js?key=' . 'AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw' . '&callback=initMap',
+				[],
+				null,
+				true
+			);
+		}
+
+		public register_admin_scripts()
+		{
+
+			wp_enqueue_script(
+				'google-maps',
+				'https://maps.googleapis.com/maps/api/js?key=' . 'AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw' . '&callback=initMap',
+				[],
+				null,
+				true
+			);
+
 		}
 	}
 }

@@ -69,6 +69,7 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			register_rest_route('gas-stations/v1', '/filter', [
 				'methods'  => 'GET',
 				'callback' =>  array($this, 'gas_stations_rest_filter'),
+				'permission_callback' => '__return_true',
 			]);
 		}
 

@@ -12,6 +12,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		setAttributes( { columns: newColumns } );
 	};
 
+	const [ sortAddress, setSortAddress ] = useState( '' );
+	const [ coords, setCoords ] = useState( '' );
 	const [ search, setSearch ] = useState( '' );
 	const [ sortBy, setSortBy ] = useState( 'address' );
 	const [ sortOrder, setSortOrder ] = useState( 'asc' );
@@ -32,6 +34,24 @@ export default function Edit( { attributes, setAttributes } ) {
 		return address.includes( search.toLowerCase() );
 	} );
 
+	function getDistanceKm( lat1, lng1, lat2, lng2 ) {
+		const R = 6371;
+
+		const dLat = ( ( lat2 - lat1 ) * Math.PI ) / 180;
+		const dLng = ( ( lng2 - lng1 ) * Math.PI ) / 180;
+
+		const a =
+			Math.sin( dLat / 2 ) * Math.sin( dLat / 2 ) +
+			Math.cos( ( lat1 * Math.PI ) / 180 ) *
+				Math.cos( ( lat2 * Math.PI ) / 180 ) *
+				Math.sin( dLng / 2 ) *
+				Math.sin( dLng / 2 );
+
+		const c = 2 * Math.atan2( Math.sqrt( a ), Math.sqrt( 1 - a ) );
+
+		return R * c;
+	}
+
 	const sortedPosts = [ ...filteredPosts ].sort( ( a, b ) => {
 		let valueA;
 		let valueB;
@@ -43,9 +63,21 @@ export default function Edit( { attributes, setAttributes } ) {
 				break;
 
 			case 'distance':
-				// пример: используем X как "distance"
-				// valueA = Number( a.meta?.['gas-station_geometry_x'] || 0 );
-				// valueB = Number( b.meta?.['gas-station_geometry_x'] || 0 );
+				if ( coords ) {
+					valueA = getDistanceKm(
+						coords.lat,
+						coords.lng,
+						Number( a.meta?.[ 'gas-station_geometry_y' ] || 0 ),
+						Number( a.meta?.[ 'gas-station_geometry_x' ] || 0 )
+					);
+
+					valueB = getDistanceKm(
+						coords.lat,
+						coords.lng,
+						Number( b.meta?.[ 'gas-station_geometry_y' ] || 0 ),
+						Number( b.meta?.[ 'gas-station_geometry_x' ] || 0 )
+					);
+				}
 				break;
 
 			case 'address':
@@ -62,6 +94,43 @@ export default function Edit( { attributes, setAttributes } ) {
 		if ( valueA > valueB ) return sortOrder === 'asc' ? 1 : -1;
 		return 0;
 	} );
+
+	const fetchCoords = async ( value ) => {
+		if ( ! value ) return;
+
+		try {
+			const res = await fetch(
+				`https://maps.googleapis.com/maps/api/geocode/json?address=${ encodeURIComponent(
+					value
+				) }&key=AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw`
+			);
+
+			const data = await res.json();
+
+			if ( ! data.results || ! data.results.length ) {
+				throw new Error( 'Address not found' );
+			}
+
+			const location = data.results[ 0 ].geometry.location;
+
+			setCoords( {
+				lat: location.lat,
+				lng: location.lng,
+			} );
+		} catch ( err ) {
+			setCoords( null );
+		}
+	};
+
+	let debounceTimer;
+	const handleChange = ( value ) => {
+		setSortAddress( value );
+
+		clearTimeout( debounceTimer );
+		debounceTimer = setTimeout( () => {
+			fetchCoords( value );
+		}, 500 );
+	};
 
 	return (
 		<>
@@ -99,7 +168,7 @@ export default function Edit( { attributes, setAttributes } ) {
 						value={ sortBy }
 						options={ [
 							{ label: 'Address', value: 'address' },
-							// { label: 'Distance', value: 'distance' },
+							{ label: 'Distance', value: 'distance' },
 							{ label: 'ID', value: 'id' },
 						] }
 						onChange={ setSortBy }
@@ -114,6 +183,14 @@ export default function Edit( { attributes, setAttributes } ) {
 						] }
 						onChange={ setSortOrder }
 					/>
+					{ sortBy === 'distance' && (
+						<TextControl
+							label="Address to calculate distance"
+							value={ sortAddress }
+							onChange={ handleChange }
+							placeholder="Enter address..."
+						/>
+					) }
 				</div>
 
 				{ /* --- Content --- */ }
@@ -122,6 +199,7 @@ export default function Edit( { attributes, setAttributes } ) {
 				{ posts && safePosts.length === 0 && (
 					<p>No posts found for this post type.</p>
 				) }
+				<div id="gas-stations-map" />
 				{ posts && safePosts.length > 0 && (
 					<div className="gas-stations-grid row w-100 m-0 d-flex flex-wrap">
 						{ sortedPosts.map( ( post ) => {
