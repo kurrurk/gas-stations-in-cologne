@@ -171,7 +171,7 @@ if (! class_exists('Gas_Stations')) {
 			);
 		}
 
-		public register_admin_scripts()
+		public function register_admin_scripts()
 		{
 
 			wp_enqueue_script(
@@ -181,7 +181,6 @@ if (! class_exists('Gas_Stations')) {
 				null,
 				true
 			);
-
 		}
 	}
 }

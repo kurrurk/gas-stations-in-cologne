@@ -1,15 +1,24 @@
-//import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InspectorControls,
+	BlockControls,
+} from '@wordpress/block-editor';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './editor.scss';
 import { TextControl, SelectControl, PanelBody } from '@wordpress/components';
 
 export default function Edit( { attributes, setAttributes } ) {
-	const { columns } = attributes;
+	const mapRef = useRef( null );
+
+	const { columns, showMap } = attributes;
 	const onChangeColumns = ( newColumns ) => {
 		setAttributes( { columns: newColumns } );
+	};
+	const toggleShowMap = () => {
+		setAttributes( { showMap: ! showMap } );
 	};
 
 	const [ sortAddress, setSortAddress ] = useState( '' );
@@ -132,6 +141,40 @@ export default function Edit( { attributes, setAttributes } ) {
 		}, 500 );
 	};
 
+	useEffect( () => {
+		if ( ! window.google || ! mapRef.current || ! showMap ) return;
+
+		const center = { lat: 50.9375, lng: 6.9603 };
+
+		const map = new window.google.maps.Map( mapRef.current, {
+			zoom: 11,
+			center,
+		} );
+
+		sortedPosts.forEach( ( station ) => {
+			const marker = new window.google.maps.Marker( {
+				position: {
+					lat: Number( station.meta[ 'gas-station_geometry_y' ] ),
+					lng: Number( station.meta[ 'gas-station_geometry_x' ] ),
+				},
+				map,
+			} );
+
+			marker.addListener( 'click', () => {
+				const card = document.getElementById(
+					`station-${ station.id }`
+				);
+
+				if ( card ) {
+					card.scrollIntoView( {
+						behavior: 'smooth',
+						block: 'start',
+					} );
+				}
+			} );
+		} );
+	}, [ sortedPosts, showMap ] );
+
 	return (
 		<>
 			<InspectorControls>
@@ -150,6 +193,16 @@ export default function Edit( { attributes, setAttributes } ) {
 					/>
 				</PanelBody>
 			</InspectorControls>
+			<BlockControls
+				controls={ [
+					{
+						icon: 'location-alt',
+						title: __( 'Show Map', 'gas-stations' ),
+						onClick: toggleShowMap,
+						isActive: showMap,
+					},
+				] }
+			></BlockControls>
 			<div
 				{ ...useBlockProps( {
 					className: `container border border-info rounded-1 bg-light`,
@@ -192,14 +245,14 @@ export default function Edit( { attributes, setAttributes } ) {
 						/>
 					) }
 				</div>
-
 				{ /* --- Content --- */ }
 				{ ! posts && <p>Loading…</p> }
-
 				{ posts && safePosts.length === 0 && (
 					<p>No posts found for this post type.</p>
 				) }
-				<div id="gas-stations-map" />
+				{ showMap && (
+					<div ref={ mapRef } style={ { height: '400px' } } />
+				) }
 				{ posts && safePosts.length > 0 && (
 					<div className="gas-stations-grid row w-100 m-0 d-flex flex-wrap">
 						{ sortedPosts.map( ( post ) => {
@@ -209,7 +262,10 @@ export default function Edit( { attributes, setAttributes } ) {
 									key={ post.id }
 									className={ `col-${ columns } p-1` }
 								>
-									<div className="card border-info mb-3 p-0">
+									<div
+										id={ `station-${ post.id }` }
+										className="card border-info mb-3 p-0"
+									>
 										{ /* <img src="..." class="card-img-top" alt="..."> */ }
 										<div
 											className="card-header"

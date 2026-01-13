@@ -21,6 +21,10 @@
 		"columns": {
 			"type": "number",
 			"default": 3
+		},
+		"showMap": {
+			"type": "boolean",
+			"default": false
 		}
 	}
 }
