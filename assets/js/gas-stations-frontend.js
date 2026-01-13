@@ -32,7 +32,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
 			const response = await fetch( url );
 			const html = await response.text();
 
-			results.innerHTML = html;
+			results.innerHTML = html
+				.replace( /^["']|["']$/g, '' )
+				.replace( /\\n/g, '' )
+				.replace( /\\t/g, '' )
+				.replace( /\\\//g, '/' )
+				.replace( /\\"/g, '"' );
 		};
 
 		const triggerUpdate = () => {

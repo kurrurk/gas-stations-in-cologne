@@ -1,22 +1,22 @@
-<div <?php echo $wrapper_attributes; ?>>
-	<form method="get" class="border-bottom border-info p-2 mb-2">
+<div <?php echo $wrapper_attributes; ?> data-columns="<?php echo esc_attr($columns); ?>">
+	<form method="get" class="gas-filter-form border-bottom border-info p-2 mb-2">
 
 		<input
 			type="text"
-			name="gas_search"
+			name="search"
 			value="<?php //echo esc_attr($search);
 					?>"
 			placeholder="Search by address"
 			class="form-control mb-2" />
 
-		<select name="gas_sort_by" class="form-select mb-2">
+		<select name="sortBy" class="form-select mb-2">
 			<option value="address" <?php //selected($sort_by, 'address');
 									?>>Address</option>
 			<option value="id" <?php //selected($sort_by, 'id');
 								?>>ID</option>
 		</select>
 
-		<select name="gas_sort_order" class="form-select mb-2">
+		<select name="sortOrder" class="form-select mb-2">
 			<option value="asc" <?php //selected($sort_order, 'asc');
 								?>>Ascending</option>
 			<option value="desc" <?php //selected($sort_order, 'desc');
@@ -28,7 +28,7 @@
 		</button>
 
 	</form>
-	<div class="gas-stations-grid row w-100 m-0 d-flex flex-wrap">
+	<div class="gas-results gas-stations-grid row w-100 m-0 d-flex flex-wrap">
 
 		<?php while ($query->have_posts()) : $query->the_post();
 

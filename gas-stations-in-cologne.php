@@ -140,7 +140,7 @@ if (! class_exists('Gas_Stations')) {
 			wp_register_script(
 				'gas-stations-js',
 				GAS_STATIONS_URL . 'assets/js/gas-stations-frontend.js',
-				array('jquery'),
+				array(),
 				filemtime(GAS_STATIONS_PATH . 'assets/js/gas-stations-frontend.js'),
 				true
 			);
