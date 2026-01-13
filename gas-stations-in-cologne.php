@@ -44,7 +44,10 @@ if (! class_exists('Gas_Stations')) {
 			require_once(GAS_STATIONS_PATH . 'class.gas-stations-settings.php');
 			$Gas_Stations_Settings = new Gas_Stations_Settings();
 
-			add_action('init', array($this, 'create_block_gas_stations_in_cologne_block_init'));
+			require_once(GAS_STATIONS_PATH . 'blocks/class.gas-stations-list-block.php');
+			$Gas_Stations_Block_List = new Gas_Stations_Block_List();
+
+			add_action('wp_enqueue_scripts', array($this, 'register_scripts'));
 		}
 
 		public function define_constants()
@@ -131,10 +134,32 @@ if (! class_exists('Gas_Stations')) {
 			require_once(GAS_STATIONS_PATH . 'views/settings-page.php');
 		}
 
-
-		public function create_block_gas_stations_in_cologne_block_init()
+		public function register_scripts()
 		{
-			register_block_type_from_metadata(__DIR__);
+
+			wp_register_script(
+				'gas-stations-js',
+				GAS_STATIONS_URL . 'assets/js/gas-stations-frontend.js',
+				array('jquery'),
+				filemtime(GAS_STATIONS_PATH . 'assets/js/gas-stations-frontend.js'),
+				true
+			);
+
+			wp_register_style(
+				'gas-stations-style-css',
+				GAS_STATIONS_URL . 'assets/css/frontend.css',
+				array(),
+				filemtime(GAS_STATIONS_PATH . 'assets/css/frontend.css'),
+				'all'
+			);
+
+			wp_register_style(
+				'gas-stations-bootstrap-css',
+				GAS_STATIONS_URL . 'assets/css/bootstrap.min.css',
+				array(),
+				filemtime(GAS_STATIONS_PATH . 'assets/css/bootstrap.min.css'),
+				'all'
+			);
 		}
 	}
 }

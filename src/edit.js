@@ -119,10 +119,10 @@ export default function Edit( { attributes, setAttributes } ) {
 				{ /* --- Content --- */ }
 				{ ! posts && <p>Loading…</p> }
 
-				{ posts && posts.length === 0 && (
+				{ posts && safePosts.length === 0 && (
 					<p>No posts found for this post type.</p>
 				) }
-				{ posts && posts.length > 0 && (
+				{ posts && safePosts.length > 0 && (
 					<div className="gas-stations-grid row w-100 m-0 d-flex flex-wrap">
 						{ sortedPosts.map( ( post ) => {
 							const meta = post.meta || {};
