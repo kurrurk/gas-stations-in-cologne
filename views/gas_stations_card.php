@@ -1,5 +1,5 @@
-<div class="col-<?php echo esc_attr($columns); ?> p-1">
-	<div class="card border-info mb-3 p-0">
+<div class="card-wrapper col-<?php echo esc_attr($columns); ?> p-1">
+	<div class="card h-100 border-info mb-3 p-0">
 		<div class="card-header"><?php echo esc_html(get_the_title()); ?></div>
 		<div class="card-body">
 			<?php if ($address) : ?>

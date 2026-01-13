@@ -14,6 +14,8 @@
 									?>>Address</option>
 			<option value="id" <?php //selected($sort_by, 'id');
 								?>>ID</option>
+			<option value="distance" <?php //selected($sort_by, 'id');
+										?>>Distance</option>
 		</select>
 
 		<select name="sortOrder" class="form-select mb-2">

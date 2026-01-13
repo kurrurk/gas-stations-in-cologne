@@ -264,7 +264,7 @@ export default function Edit( { attributes, setAttributes } ) {
 								>
 									<div
 										id={ `station-${ post.id }` }
-										className="card border-info mb-3 p-0"
+										className="card h-100 border-info mb-3 p-0"
 									>
 										{ /* <img src="..." class="card-img-top" alt="..."> */ }
 										<div

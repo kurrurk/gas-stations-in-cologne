@@ -255,7 +255,7 @@ function Edit({
             className: `col-${columns} p-1`,
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
               id: `station-${post.id}`,
-              className: "card border-info mb-3 p-0",
+              className: "card h-100 border-info mb-3 p-0",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                 className: "card-header",
                 dangerouslySetInnerHTML: {

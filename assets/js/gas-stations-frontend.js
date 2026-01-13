@@ -13,9 +13,13 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const sortOrderSelect = form.querySelector(
 			'select[name="sortOrder"]'
 		);
+		const distanceAddressInput = form.querySelector(
+			'input[name="distanceAddress"]'
+		);
 
 		let debounceTimer = null;
 
+		// ---------- LOAD HTML ----------
 		const loadResults = async ( params ) => {
 			results.innerHTML = '<p>Loading…</p>';
 
@@ -40,15 +44,21 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				.replace( /\\"/g, '"' );
 		};
 
-		const triggerUpdate = () => {
+		// ---------- MAIN UPDATE ----------
+		const triggerUpdate = async () => {
 			const params = {
 				search: searchInput.value,
 				sortBy: sortBySelect.value,
 				sortOrder: sortOrderSelect.value,
 			};
 
-			//const uRLSearchParams = new URLSearchParams( params );
+			if ( distanceAddressInput?.value ) {
+				params.address = distanceAddressInput.value;
+			}
 
+			// const uRLSearchParams = new URLSearchParams( params );
+
+			// HTML
 			loadResults( params );
 
 			// fetch(
@@ -66,6 +76,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		};
 
 		searchInput.addEventListener( 'input', debouncedTrigger );
+		distanceAddressInput?.addEventListener( 'input', debouncedTrigger );
 
 		sortBySelect.addEventListener( 'change', triggerUpdate );
 		sortOrderSelect.addEventListener( 'change', triggerUpdate );
