@@ -32,6 +32,10 @@ if (! class_exists('Gas_Stations_Block_List')) {
 				? (int) $attributes['columns']
 				: 4;
 
+			$showMap = isset($attributes['showMap'])
+				? (int) $attributes['showMap']
+				: false;
+
 			$wrapper_attributes = get_block_wrapper_attributes([
 				'class' => 'wp-block-gas-stations-list border border-info rounded-1 bg-light',
 			]);
@@ -69,6 +73,12 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			register_rest_route('gas-stations/v1', '/filter', [
 				'methods'  => 'GET',
 				'callback' =>  array($this, 'gas_stations_rest_filter'),
+				'permission_callback' => '__return_true',
+			]);
+
+			register_rest_route('gas-stations/v1', '/data', [
+				'methods'  => 'GET',
+				'callback' => array($this, 'gas_stations_rest_data'),
 				'permission_callback' => '__return_true',
 			]);
 		}
@@ -126,6 +136,61 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			wp_reset_postdata();
 
 			return ob_get_clean();
+		}
+
+		public function gas_stations_rest_data(WP_REST_Request $request)
+		{
+			$search     = sanitize_text_field($request->get_param('search'));
+			$sort_by    = sanitize_text_field($request->get_param('sortBy'));
+			$sort_order = sanitize_text_field($request->get_param('sortOrder'));
+
+			$args = [
+				'post_type'      => 'gas-station',
+				'posts_per_page' => -1,
+				'meta_query'     => [],
+			];
+
+
+			if ($search) {
+				$args['meta_query'][] = [
+					'key'     => 'gas-station_address',
+					'value'   => $search,
+					'compare' => 'LIKE',
+				];
+			}
+
+			if ($sort_by === 'id') {
+				$args['orderby']  = 'meta_value_num';
+				$args['meta_key'] = 'gas-station_object_id';
+			} else {
+				$args['orderby']  = 'meta_value';
+				$args['meta_key'] = 'gas-station_address';
+			}
+
+			$args['order'] = strtoupper($sort_order) === 'DESC' ? 'DESC' : 'ASC';
+
+			$query = new WP_Query($args);
+
+			$data = [];
+
+			if ($query->have_posts()) {
+				while ($query->have_posts()) {
+					$query->the_post();
+
+					$data[] = [
+						'id'      => get_the_ID(),
+						'title'   => get_the_title(),
+						'address' => get_post_meta(get_the_ID(), 'gas-station_address', true),
+						'lat'     => (float) get_post_meta(get_the_ID(), 'gas-station_geometry_y', true),
+						'lng'     => (float) get_post_meta(get_the_ID(), 'gas-station_geometry_x', true),
+						'object_id' => (int) get_post_meta(get_the_ID(), 'gas-station_object_id', true),
+					];
+				}
+			}
+
+			wp_reset_postdata();
+
+			return rest_ensure_response($data);
 		}
 	}
 }

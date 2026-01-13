@@ -23,7 +23,13 @@
 									?>>Descending</option>
 		</select>
 
+		<input type="text" name="distanceAddress" class="form-control mb-2" placeholder="Enter address..." />
+
+
 	</form>
+	<?php if ($showMap): ?>
+		<div id="map" style="width:100%; height:400px;"></div>
+	<?php endif; ?>
 	<div class="gas-results gas-stations-grid row w-100 m-0 d-flex flex-wrap">
 
 		<?php while ($query->have_posts()) : $query->the_post();

@@ -47,7 +47,17 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				sortOrder: sortOrderSelect.value,
 			};
 
+			//const uRLSearchParams = new URLSearchParams( params );
+
 			loadResults( params );
+
+			// fetch(
+			// 	'/wp-json/gas-stations/v1/data?' + uRLSearchParams.toString()
+			// )
+			// 	.then( ( res ) => res.json() )
+			// 	.then( ( data ) => {
+			// 		initMap( data );
+			// 	} );
 		};
 
 		const debouncedTrigger = () => {
@@ -62,4 +72,25 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		triggerUpdate();
 	} );
+
+	// function initMap( stations ) {
+	// 	if ( ! document.getElementById( 'map' ) ) {
+	// 		return;
+	// 	}
+
+	// 	const center = { lat: 50.9375, lng: 6.9603 }; // Köln
+
+	// 	const map = new google.maps.Map( document.getElementById( 'map' ), {
+	// 		zoom: 11,
+	// 		center: center,
+	// 	} );
+
+	// 	stations.forEach( ( station ) => {
+	// 		new google.maps.Marker( {
+	// 			position: { lat: station.lat, lng: station.lng },
+	// 			map: map,
+	// 			title: station.title,
+	// 		} );
+	// 	} );
+	// }
 } );
