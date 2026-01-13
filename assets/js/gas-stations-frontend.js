@@ -41,7 +41,10 @@ document.addEventListener( 'DOMContentLoaded', () => {
 				.replace( /\\n/g, '' )
 				.replace( /\\t/g, '' )
 				.replace( /\\\//g, '/' )
-				.replace( /\\"/g, '"' );
+				.replace( /\\"/g, '"' )
+				.replace( /\\u([0-9a-fA-F]{4})/g, ( match, grp ) =>
+					String.fromCharCode( parseInt( grp, 16 ) )
+				);
 		};
 
 		// ---------- MAIN UPDATE ----------
