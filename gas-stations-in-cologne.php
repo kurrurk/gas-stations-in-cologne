@@ -47,6 +47,9 @@ if (! class_exists('Gas_Stations')) {
 			require_once(GAS_STATIONS_PATH . 'blocks/class.gas-stations-list-block.php');
 			$Gas_Stations_Block_List = new Gas_Stations_Block_List();
 
+			require_once(GAS_STATIONS_PATH . 'shortcodes/class.gas-stations-list-shortcode.php');
+			$Gas_Stations_Shortcode = new Gas_Stations_Shortcode();
+
 			add_action('wp_enqueue_scripts', array($this, 'register_scripts'));
 			add_action('admin_enqueue_scripts', array($this, 'register_admin_scripts'), 999);
 		}

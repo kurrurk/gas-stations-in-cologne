@@ -4,41 +4,34 @@ if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
-if (! class_exists('Gas_Stations_Block_List')) {
-	class Gas_Stations_Block_List
+if (! class_exists('Gas_Stations_Shortcode')) {
+	class Gas_Stations_Shortcode
 	{
 
 		public function __construct()
 		{
-			add_action('init', array($this, 'create_block_gas_stations_in_cologne_block_init'));
+
+			add_shortcode('gas_stations', array($this, 'add_shortcode'));
 			add_action('rest_api_init', array($this, 'gas_stations_rest_api_init'));
 
-			add_action('enqueue_block_assets', array($this, 'enqueue_block_assets'), 999);
+			add_action('enqueue_block_assets', array($this, 'enqueue_shortcode_assets'), 999);
 		}
 
-		public function create_block_gas_stations_in_cologne_block_init()
+		public function add_shortcode($attributes = array(), $content = null, $tag = '')
 		{
 
-			register_block_type(
-				GAS_STATIONS_PATH,
-				array('render_callback' => array($this, 'render_gas_stations_block'))
-			);
-		}
+			$attributes = array_change_key_case((array) $attributes, CASE_LOWER);
 
-		function render_gas_stations_block($attributes)
-		{
+			extract(shortcode_atts(
+				array(
+					'columns' => 3,
+					'showmap' => false
+				),
+				$attributes,
+				$tag
+			));
 
-			$columns = isset($attributes['columns'])
-				? (int) $attributes['columns']
-				: 4;
-
-			$showMap = isset($attributes['showMap'])
-				? (int) $attributes['showMap']
-				: false;
-
-			$wrapper_attributes = get_block_wrapper_attributes([
-				'class' => 'wp-block-gas-stations-list border border-info rounded-1 bg-light',
-			]);
+			$showMap = $showmap;
 
 			$query = new WP_Query([
 				'post_type'      => 'gas-station',
@@ -51,16 +44,16 @@ if (! class_exists('Gas_Stations_Block_List')) {
 
 			ob_start();
 
-			require(GAS_STATIONS_PATH . 'views/gas_stations_block.php');
+			require(GAS_STATIONS_PATH . 'views/gas_stations_shortcode.php');
 
 			wp_reset_postdata();
 
 			return ob_get_clean();
 		}
 
-		public function enqueue_block_assets()
+		public function enqueue_shortcode_assets()
 		{
-			if (! has_block('create-block/gas-stations-in-cologne')) {
+			if (! has_shortcode(get_post()->post_content, 'gas_stations')) {
 				return;
 			}
 
@@ -68,6 +61,7 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			wp_enqueue_style('gas-stations-style-css');
 			wp_enqueue_script('gas-stations-js');
 		}
+
 
 		public function gas_stations_rest_api_init()
 		{
