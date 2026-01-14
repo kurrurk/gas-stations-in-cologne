@@ -1,3 +1,4 @@
+<!-- HTML für das Layout des Gutenberg-Blocks. -->
 <div <?php echo $wrapper_attributes; ?> data-columns="<?php echo esc_attr($columns); ?>">
 	<form method="get" class="gas-filter-form border-bottom border-info p-2 mb-2">
 

@@ -1,6 +1,5 @@
 <?php
-
-//$meta = get_post_meta($post->ID);
+//HTML für das Layout der Metadaten-Felder im ‚gas-station‘-Editor.
 $object_id = get_post_meta($post->ID, 'gas-station_link_text', true);
 $address = get_post_meta($post->ID, 'gas-station_address', true);
 $geometry_x = get_post_meta($post->ID, 'gas-station_geometry_x', true);

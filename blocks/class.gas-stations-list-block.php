@@ -10,9 +10,13 @@ if (! class_exists('Gas_Stations_Block_List')) {
 
 		public function __construct()
 		{
+			//Registriert einen neuen Gutenberg Block.
 			add_action('init', array($this, 'create_block_gas_stations_in_cologne_block_init'));
+
+			//Erstellt einen REST-Endpunkt für den JSON-Download zur dynamischen Block-Generierung
 			add_action('rest_api_init', array($this, 'gas_stations_rest_api_init'));
 
+			//Bindet die benötigten Styles und Skripte für den Gutenberg Block ein.
 			add_action('enqueue_block_assets', array($this, 'enqueue_block_assets'), 999);
 		}
 
@@ -69,6 +73,7 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			wp_enqueue_script('gas-stations-js');
 		}
 
+		//Erstellt einen REST-Endpunkt
 		public function gas_stations_rest_api_init()
 		{
 
@@ -79,6 +84,7 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			]);
 		}
 
+		// Erstellt ein sortiertes Objekt-Array zur Generierung der Karten.
 		private function get_gas_stations_data(WP_REST_Request $request)
 		{
 
@@ -173,12 +179,14 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			return $data;
 		}
 
+		// Wandelt das Array in JSON um und sendet es an den Endpoint.
 		public function gas_stations_rest_data(WP_REST_Request $request)
 		{
 			$data = $this->get_gas_stations_data($request);
 			return rest_ensure_response($data);
 		}
 
+		// Berechnet die Entfernung zwischen zwei Punkten auf der Erde.
 		private function calculate_distance_km($lat1, $lng1, $lat2, $lng2)
 		{
 			$earth_radius = 6371; // km
@@ -196,6 +204,7 @@ if (! class_exists('Gas_Stations_Block_List')) {
 			return $earth_radius * $c;
 		}
 
+		// Ruft Geokoordinaten über die Google API ab.
 		private function get_coords_from_address($address)
 		{
 

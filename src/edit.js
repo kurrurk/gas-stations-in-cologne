@@ -43,6 +43,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		return address.includes( search.toLowerCase() );
 	} );
 
+	//Berechnet die Entfernung zwischen zwei Punkten auf der Erde.
 	function getDistanceKm( lat1, lng1, lat2, lng2 ) {
 		const R = 6371;
 
@@ -104,6 +105,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		return 0;
 	} );
 
+	//Ermittelt Koordinaten von Google anhand einer Adresse.
 	const fetchCoords = async ( value ) => {
 		if ( ! value ) return;
 

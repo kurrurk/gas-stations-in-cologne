@@ -34,22 +34,27 @@ if (! class_exists('Gas_Stations')) {
 		{
 			$this->define_constants();
 
-			require_once(GAS_STATIONS_PATH . 'functions/functions.php');
 
+			//Fügt einen neuen Admin-Menüpunkt für das Plugin und den CPT 'gas-station' hinzu.
 			add_action('admin_menu', array($this, 'add_menu'));
 
+			//Erstellt ein Objekt zur Verwaltung des neuen CPT 'gas-station'.
 			require_once(GAS_STATIONS_PATH . 'post-types/class.gas-stations-cpt.php');
 			$Gas_Stations_Post_Type = new Gas_Stations_Post_Type();
 
+			//Erstellt ein Objekt für die Verwaltung der Plugin-Einstellungen.
 			require_once(GAS_STATIONS_PATH . 'class.gas-stations-settings.php');
 			$Gas_Stations_Settings = new Gas_Stations_Settings();
 
+			//Erstellt Objekte für die Verwaltung des Gutenbergs Bloks.
 			require_once(GAS_STATIONS_PATH . 'blocks/class.gas-stations-list-block.php');
 			$Gas_Stations_Block_List = new Gas_Stations_Block_List();
 
+			//Erstellt Objekte für die Verwaltung des Shortcodes.
 			require_once(GAS_STATIONS_PATH . 'shortcodes/class.gas-stations-list-shortcode.php');
 			$Gas_Stations_Shortcode = new Gas_Stations_Shortcode();
 
+			//Lädt die benötigten Styles und Skripte.
 			add_action('wp_enqueue_scripts', array($this, 'register_scripts'));
 			add_action('admin_enqueue_scripts', array($this, 'register_admin_scripts'), 999);
 		}

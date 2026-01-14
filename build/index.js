@@ -78,6 +78,8 @@ function Edit({
     const address = String(post.meta?.['gas-station_address'] || '').toLowerCase();
     return address.includes(search.toLowerCase());
   });
+
+  //Berechnet die Entfernung zwischen zwei Punkten auf der Erde.
   function getDistanceKm(lat1, lng1, lat2, lng2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -109,6 +111,8 @@ function Edit({
     if (valueA > valueB) return sortOrder === 'asc' ? 1 : -1;
     return 0;
   });
+
+  //Ermittelt Koordinaten von Google anhand einer Adresse.
   const fetchCoords = async value => {
     if (!value) return;
     try {

@@ -12,7 +12,11 @@ if (! class_exists('Gas_Stations_Settings')) {
 		public function __construct()
 		{
 			self::$options = get_option('gas-stations_options');
+
+			//Verarbeitet die Eingabe, lädt die JSON-Daten und erstellt daraus ‚gas-station‘-Posts.
 			add_action('admin_init', array($this, 'handle_import_from_json'), 9);
+
+			//Konfiguriert das Formular auf der Einstellungsseite des Plugins.
 			add_action('admin_init', array($this, 'admin_init'));
 		}
 

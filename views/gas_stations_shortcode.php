@@ -1,3 +1,4 @@
+<!-- HTML für das Layout des Shortcodes. -->
 <div class="wp-shortcode-gas-stations-list border border-info rounded-1 bg-light" data-columns="<?php echo esc_attr($columns); ?>">
 	<form method="get" class="gas-filter-form border-bottom border-info p-2 mb-2">
 
