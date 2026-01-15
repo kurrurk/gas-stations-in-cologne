@@ -208,7 +208,7 @@ if (! class_exists('Gas_Stations_Block_List')) {
 		private function get_coords_from_address($address)
 		{
 
-			$api_key = 'AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw';
+			$api_key = 'YOUR_API_KEY';
 
 			$url = add_query_arg(
 				[

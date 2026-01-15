@@ -172,7 +172,7 @@ if (! class_exists('Gas_Stations')) {
 
 			wp_enqueue_script(
 				'google-maps',
-				'https://maps.googleapis.com/maps/api/js?key=' . 'AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw' . '&callback=initMap',
+				'https://maps.googleapis.com/maps/api/js?key=' . 'YOUR_API_KEY' . '&callback=initMap',
 				[],
 				null,
 				true
@@ -184,7 +184,7 @@ if (! class_exists('Gas_Stations')) {
 
 			wp_enqueue_script(
 				'google-maps',
-				'https://maps.googleapis.com/maps/api/js?key=' . 'AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw' . '&callback=initMap',
+				'https://maps.googleapis.com/maps/api/js?key=' . 'YOUR_API_KEY' . '&callback=initMap',
 				[],
 				null,
 				true

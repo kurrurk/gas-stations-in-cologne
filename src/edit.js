@@ -113,7 +113,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			const res = await fetch(
 				`https://maps.googleapis.com/maps/api/geocode/json?address=${ encodeURIComponent(
 					value
-				) }&key=AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw`
+				) }&key=YOUR_API_KEY`
 			);
 
 			const data = await res.json();

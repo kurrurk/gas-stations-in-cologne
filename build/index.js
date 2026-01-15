@@ -116,7 +116,7 @@ function Edit({
   const fetchCoords = async value => {
     if (!value) return;
     try {
-      const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(value)}&key=AIzaSyCAsek5OKF19JGZuOlAeic5HouACN1A6fw`);
+      const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(value)}&key=YOUR_API_KEY`);
       const data = await res.json();
       if (!data.results || !data.results.length) {
         throw new Error('Address not found');
