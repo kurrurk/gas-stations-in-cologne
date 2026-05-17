@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default, dark, cupcake, cyberpunk, retro, dracula, coffee;
+}
+
+.wp-block-create-block-gas-stations-list-block {
+	border: 1px dotted #f00;
+	.gas-stations-filter-form_text-field {
+		label.components-base-control__label {
+			@apply label text-sm text-base-content/70;
+		}
+		input.components-text-control__input {
+			@apply input w-full bg-base-100 border border-base-300 text-base-content placeholder:text-base-content/40 rounded-md focus:outline focus:outline-2 focus:outline-base-content focus:border-base-content;
+		}
+	}
+	.gas-stations-filter-form_select {
+		.components-input-base {
+			gap: 0;
+		}
+		label.components-input-control__label {
+			@apply label text-sm text-base-content/70 mb-2;
+		}
+		.components-input-control__container {
+			@apply relative bg-base-100 border-base-300 rounded-md;
+		}
+
+		select.components-select-control__input {
+			appearance: auto;
+			@apply select w-full text-base-content bg-base-100 border border-base-300 border-solid;
+
+			@apply rounded-md;
+
+			@apply focus:border-base-content;
+			@apply focus:outline focus:outline-2;
+			@apply focus:outline-base-content;
+
+			@apply transition-none;
+		}
+
+		.components-input-control__suffix {
+			display: none;
+		}
+
+		.components-input-control__backdrop {
+			display: none;
+		}
+
+		.components-input-control__suffix {
+			@apply pointer-events-none;
+		}
+	}
+}

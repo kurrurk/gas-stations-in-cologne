@@ -1,5 +1,7 @@
 document.addEventListener( 'DOMContentLoaded', () => {
-	const blocks = document.querySelectorAll( '.wp-block-gas-stations-list' );
+	const blocks = document.querySelectorAll(
+		'.wp-block-gas-stations-list, .wp-shortcode-gas-stations-list'
+	);
 
 	blocks.forEach( ( block ) => {
 		const form = block.querySelector( '.gas-filter-form' );
@@ -13,43 +15,52 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		const sortOrderSelect = form.querySelector(
 			'select[name="sortOrder"]'
 		);
+		const distanceAddressInput = form.querySelector(
+			'input[name="distanceAddress"]'
+		);
 
 		let debounceTimer = null;
 
-		const loadResults = async ( params ) => {
-			results.innerHTML = '<p>Loading…</p>';
+		// ---------- LOAD HTML ----------
+		const loadResults = ( params ) => {
+			results.innerHTML = '';
 
-			const url = new URL(
-				'/wp-json/gas-stations/v1/filter',
-				window.location.origin
-			);
-			Object.keys( params ).forEach( ( key ) =>
-				url.searchParams.append( key, params[ key ] )
-			);
-
-			url.searchParams.append( 'columns', columns );
-
-			const response = await fetch( url );
-			const html = await response.text();
-
-			results.innerHTML = html
-				.replace( /^["']|["']$/g, '' )
-				.replace( /\\n/g, '' )
-				.replace( /\\t/g, '' )
-				.replace( /\\\//g, '/' )
-				.replace( /\\"/g, '"' );
+			fetch( '/wp-json/gas-stations/v1/data?' + params.toString() )
+				.then( ( res ) => res.json() )
+				.then( ( stations ) => {
+					stations.forEach( ( data ) => {
+						const station = {
+							// title: new DOMParser().parseFromString(
+							// 	data.title,
+							// 	'text/html'
+							// ).documentElement.textContent,
+							address: data.address,
+							x: data.lng,
+							y: data.lat,
+						};
+						results.appendChild(
+							createGasStationCard( station, columns )
+						);
+					} );
+				} );
 		};
 
-		const triggerUpdate = () => {
+		// ---------- MAIN UPDATE ----------
+		const triggerUpdate = async () => {
 			const params = {
 				search: searchInput.value,
 				sortBy: sortBySelect.value,
 				sortOrder: sortOrderSelect.value,
 			};
 
-			//const uRLSearchParams = new URLSearchParams( params );
+			if ( distanceAddressInput?.value ) {
+				params.address = distanceAddressInput.value;
+			}
 
-			loadResults( params );
+			const uRLSearchParams = new URLSearchParams( params );
+
+			// HTML
+			loadResults( uRLSearchParams );
 
 			// fetch(
 			// 	'/wp-json/gas-stations/v1/data?' + uRLSearchParams.toString()
@@ -66,6 +77,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		};
 
 		searchInput.addEventListener( 'input', debouncedTrigger );
+		distanceAddressInput?.addEventListener( 'input', debouncedTrigger );
 
 		sortBySelect.addEventListener( 'change', triggerUpdate );
 		sortOrderSelect.addEventListener( 'change', triggerUpdate );
@@ -93,4 +105,45 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	// 		} );
 	// 	} );
 	// }
+
+	function createGasStationCard( station, columns = 4 ) {
+		const wrapper = document.createElement( 'div' );
+		wrapper.className = `card-wrapper col-${ columns } p-1`;
+
+		const card = document.createElement( 'div' );
+		card.className = 'card h-100 border-info mb-3 p-0';
+
+		// header
+		const header = document.createElement( 'div' );
+		header.className = 'card-header';
+		header.textContent = station.title;
+
+		// body
+		const body = document.createElement( 'div' );
+		body.className = 'card-body';
+
+		if ( station.address ) {
+			const p = document.createElement( 'p' );
+			p.innerHTML = `<strong>Address:</strong> ${ station.address }`;
+			body.appendChild( p );
+		}
+
+		if ( station.x ) {
+			const p = document.createElement( 'p' );
+			p.innerHTML = `<strong>X:</strong> ${ station.x }`;
+			body.appendChild( p );
+		}
+
+		if ( station.y ) {
+			const p = document.createElement( 'p' );
+			p.innerHTML = `<strong>Y:</strong> ${ station.y }`;
+			body.appendChild( p );
+		}
+
+		card.appendChild( header );
+		card.appendChild( body );
+		wrapper.appendChild( card );
+
+		return wrapper;
+	}
 } );

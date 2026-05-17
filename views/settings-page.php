@@ -1,3 +1,4 @@
+<!-- HTML-Code für die Einstellungsseite des Plugins.  -->
 <div class="wrap">
 	<h1><?= esc_html(get_admin_page_title()); ?></h1>
 	<form method="post" id="json-import-form">
@@ -19,6 +20,7 @@
 		?>
 		<input type="submit" name="import_from_json" class="button button-primary" value="Import posts from JSON">
 	</form>
+	<!-- Skript zeigt eine Lade­meldung während des JSON-Imports an. -->
 	<script>
 		document.getElementById('json-import-form').addEventListener('submit', function() {
 			const loadingNotice = document.getElementById('import-loading');

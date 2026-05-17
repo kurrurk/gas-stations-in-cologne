@@ -1,0 +1,33 @@
+.wp-block-gas-stations-list .card-wrapper.col-2 .card-body p {
+	font-size: 0.75rem;
+}
+
+@media screen and (max-width: 1100px) {
+	.wp-block-gas-stations-list .card-wrapper.col-2 {
+		width: 25%;
+	}
+}
+
+@media screen and (max-width: 820px) {
+	.wp-block-gas-stations-list .card-wrapper.col-3,
+	.wp-block-gas-stations-list .card-wrapper.col-2 {
+		width: 33.33333333%;
+	}
+}
+
+@media screen and (max-width: 660px) {
+	.wp-block-gas-stations-list .card-wrapper.col-4,
+	.wp-block-gas-stations-list .card-wrapper.col-3,
+	.wp-block-gas-stations-list .card-wrapper.col-2 {
+		width: 50%;
+	}
+}
+
+@media screen and (max-width: 430px) {
+	.wp-block-gas-stations-list .card-wrapper.col-6,
+	.wp-block-gas-stations-list .card-wrapper.col-4,
+	.wp-block-gas-stations-list .card-wrapper.col-3,
+	.wp-block-gas-stations-list .card-wrapper.col-2 {
+		width: 100%;
+	}
+}
