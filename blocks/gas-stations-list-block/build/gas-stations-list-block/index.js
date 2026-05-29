@@ -2,6 +2,44 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/gas-stations-list-block/components/Card/Card.js"
+/*!*************************************************************!*\
+  !*** ./src/gas-stations-list-block/components/Card/Card.js ***!
+  \*************************************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ GasStationCard)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__);
+
+function GasStationCard() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
+    className: "gas-station_card bg-base-100 shadow-sm rounded-sm",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
+      className: "card-body p-4",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h2", {
+        className: "gas-station_card-title",
+        children: "Card title!"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", {
+        children: "A card component has a figure, a body part, and inside body there are title and actions parts"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
+        className: "divider divider-neutral my-1"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", {
+        className: "text-xs opacity-60 font-mono m-px",
+        children: "Lat: 50.7374"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("p", {
+        className: "text-xs opacity-60 font-mono m-px",
+        children: "Lon: 7.0982"
+      })]
+    })
+  });
+}
+
+/***/ },
+
 /***/ "./src/gas-stations-list-block/components/Map/Map.js"
 /*!***********************************************************!*\
   !*** ./src/gas-stations-list-block/components/Map/Map.js ***!
@@ -34,8 +72,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ol_layer_Vector__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ol/layer/Vector */ "./node_modules/ol/layer/Vector.js");
 /* harmony import */ var ol_interaction_DragPan__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ol/interaction/DragPan */ "./node_modules/ol/interaction/DragPan.js");
 /* harmony import */ var ol_interaction__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ol/interaction */ "./node_modules/ol/interaction/defaults.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__);
+/* harmony import */ var ol_ol_css__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ol/ol.css */ "./node_modules/ol/ol.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_21___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_21__);
+
 
 
 
@@ -118,6 +158,7 @@ function OpenLayersMap({
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     if (!mapRef.current) return;
     if (mapObj.current) return;
+    let hoveredFeature = null;
     const vectorLayer = new ol_layer_Vector__WEBPACK_IMPORTED_MODULE_17__["default"]({
       source: vectorSource.current
     });
@@ -138,6 +179,41 @@ function OpenLayersMap({
         zoom: 10
       })
     });
+    mapObj.current.on("pointermove", event => {
+      const feature = mapObj.current.forEachFeatureAtPixel(event.pixel, feature => feature);
+
+      /* reset previous */
+
+      if (hoveredFeature && hoveredFeature !== feature) {
+        hoveredFeature.setStyle(defaultStyle);
+        hoveredFeature = null;
+      }
+
+      /* hover current */
+
+      if (feature) {
+        feature.setStyle(hoverStyle);
+        hoveredFeature = feature;
+      }
+      const viewport = mapObj.current.getViewport();
+      const interactive = event.originalEvent.ctrlKey && event.originalEvent.shiftKey;
+      viewport.classList.toggle("map-draggable", interactive);
+      mapObj.current.on("movestart", () => {
+        viewport.classList.add("map-dragging");
+      });
+      mapObj.current.on("moveend", () => {
+        viewport.classList.remove("map-dragging");
+      });
+    });
+  }, []);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (!mapRef.current) return;
+    if (!mapObj.current) return;
+    const observer = new ResizeObserver(() => {
+      mapObj.current.updateSize();
+    });
+    observer.observe(mapRef.current);
+    return () => observer.disconnect();
   }, []);
 
   /* ===== resize ===== */
@@ -165,18 +241,16 @@ function OpenLayersMap({
   const clearHoldTimer = holdTimer => {
     clearTimeout(holdTimer.current);
   };
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_21__.jsx)("div", {
     ref: mapRef,
     style: {
-      position: "relative",
-      height: showMap ? "400px" : "0",
-      width: "100%",
-      overflow: "hidden"
+      height: showMap ? "400px" : "0"
     },
+    className: "rounded-sm mt-4 relative w-full overflow-hidden",
     onPointerDown: e => handlePointerDown(e, holdTimer),
     onPointerUp: clearHoldTimer(holdTimer),
     onPointerLeave: clearHoldTimer(holdTimer),
-    children: showMapOverlay && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_20__.jsx)("div", {
+    children: showMapOverlay && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_21__.jsx)("div", {
       className: " absolute inset-0 z-50 flex items-center justify-center bg-black/40 text-white text-sm font-medium pointer-events-none ",
       children: "Hold Ctrl + Shift to move the map"
     })
@@ -209,8 +283,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _icons_blue_pin_png__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./icons/blue-pin.png */ "./src/gas-stations-list-block/icons/blue-pin.png");
 /* harmony import */ var _icons_red_pin_png__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./icons/red-pin.png */ "./src/gas-stations-list-block/icons/red-pin.png");
 /* harmony import */ var _components_Map_Map__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Map/Map */ "./src/gas-stations-list-block/components/Map/Map.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _components_Card_Card__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/Card/Card */ "./src/gas-stations-list-block/components/Card/Card.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__);
+
 
 
 
@@ -266,11 +342,11 @@ function Edit({
     per_page: -1
   }));
   const safePosts = Array.isArray(posts) ? posts : [];
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
         title: "Layout",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
           label: "Columns",
           value: columns,
           options: [{
@@ -290,7 +366,7 @@ function Edit({
             value: 2
           }],
           onChange: onChangeColumns
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
           label: "Color Themes",
           value: colorTheme,
           options: [{
@@ -317,7 +393,7 @@ function Edit({
           }],
           onChange: onChangeColorTheme
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, {
         controls: [{
           icon: "location-alt",
           title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_0__.__)("Show Map", "gas-stations"),
@@ -325,21 +401,21 @@ function Edit({
           isActive: showMap
         }]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
       ...(0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({
         className: "container bg-base-200 border-base-300 rounded-xl border border-base-300 bg-base-100 p-5 shadow-sm"
       }),
       "data-theme": colorTheme,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsxs)("fieldset", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("fieldset", {
         className: "fieldset",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {
           label: "Search by address",
           value: search,
           className: "gas-stations-filter-form_text-field",
           S: true,
           onChange: setSearch,
           placeholder: "Enter address..."
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
           label: "Sort by",
           value: sortBy,
           className: "gas-stations-filter-form_select",
@@ -354,7 +430,7 @@ function Edit({
             value: "id"
           }],
           onChange: setSortBy
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
           label: "Order",
           value: sortOrder,
           className: "gas-stations-filter-form_select",
@@ -366,16 +442,26 @@ function Edit({
             value: "desc"
           }],
           onChange: setSortOrder
-        }), sortBy === "distance" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {
+        }), sortBy === "distance" && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.TextControl, {
           label: "Address to calculate distance",
           value: sortAddress,
           className: "gas-stations-filter-form_text-field",
           onChange: handleSortAddressChange,
           placeholder: "Enter address..."
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_components_Map_Map__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        showMap: showMap,
-        locations: posts
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
+        className: "block-content",
+        children: [!posts && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("p", {
+          children: "Loading\u2026"
+        }), posts && safePosts.length === 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("p", {
+          children: "No posts found for this post type."
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Map_Map__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          showMap: showMap,
+          locations: posts
+        }), posts && safePosts.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
+          className: "gas-stations-grid grid grid-cols-4 gap-2 mt-4 p-3 rounded-sm border border-accent border-dashed",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {})]
+        })]
       })]
     })]
   });
@@ -461,6 +547,18 @@ __webpack_require__.r(__webpack_exports__);
 function save() {
   return null;
 }
+
+/***/ },
+
+/***/ "./node_modules/ol/ol.css"
+/*!********************************!*\
+  !*** ./node_modules/ol/ol.css ***!
+  \********************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
 
 /***/ },
 

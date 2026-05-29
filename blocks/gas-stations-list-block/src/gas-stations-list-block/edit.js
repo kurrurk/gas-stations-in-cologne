@@ -13,6 +13,7 @@ import pinBlue from "./icons/blue-pin.png";
 import pinRed from "./icons/red-pin.png";
 
 import OpenLayersMap from "./components/Map/Map";
+import GasStationCard from "./components/Card/Card";
 
 export default function Edit({ attributes, setAttributes }) {
 	// Settings Fields
@@ -143,7 +144,24 @@ export default function Edit({ attributes, setAttributes }) {
 						/>
 					)}
 				</fieldset>
-				<OpenLayersMap showMap={showMap} locations={posts} />
+				<div className="block-content">
+					{/* --- Content --- */}
+					{!posts && <p>Loading…</p>}
+					{posts && safePosts.length === 0 && (
+						<p>No posts found for this post type.</p>
+					)}
+					<OpenLayersMap showMap={showMap} locations={posts} />
+					{posts && safePosts.length > 0 && (
+						<div className="gas-stations-grid grid grid-cols-4 gap-2 mt-4 p-3 rounded-sm border border-accent border-dashed">
+							<GasStationCard />
+							<GasStationCard />
+							<GasStationCard />
+							<GasStationCard />
+							<GasStationCard />
+							<GasStationCard />
+						</div>
+					)}
+				</div>
 			</div>
 		</>
 	);

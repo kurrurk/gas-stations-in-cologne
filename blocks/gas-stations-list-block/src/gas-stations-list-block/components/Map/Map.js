@@ -22,6 +22,7 @@ import VectorLayer from "ol/layer/Vector";
 import { toLonLat } from "ol/proj";
 import DragPan from "ol/interaction/DragPan";
 import { defaults as defaultInteractions } from "ol/interaction";
+import "ol/ol.css";
 
 const defaultStyle = new Style({
 	image: new Icon({
@@ -94,6 +95,7 @@ export default function OpenLayersMap({ showMap, locations }) {
 	useEffect(() => {
 		if (!mapRef.current) return;
 		if (mapObj.current) return;
+		let hoveredFeature = null;
 
 		const vectorLayer = new VectorLayer({
 			source: vectorSource.current,
@@ -122,6 +124,57 @@ export default function OpenLayersMap({ showMap, locations }) {
 				zoom: 10,
 			}),
 		});
+
+		mapObj.current.on("pointermove", (event) => {
+			const feature = mapObj.current.forEachFeatureAtPixel(
+				event.pixel,
+				(feature) => feature,
+			);
+
+			/* reset previous */
+
+			if (hoveredFeature && hoveredFeature !== feature) {
+				hoveredFeature.setStyle(defaultStyle);
+
+				hoveredFeature = null;
+			}
+
+			/* hover current */
+
+			if (feature) {
+				feature.setStyle(hoverStyle);
+
+				hoveredFeature = feature;
+			}
+
+			const viewport = mapObj.current.getViewport();
+
+			const interactive =
+				event.originalEvent.ctrlKey && event.originalEvent.shiftKey;
+
+			viewport.classList.toggle("map-draggable", interactive);
+
+			mapObj.current.on("movestart", () => {
+				viewport.classList.add("map-dragging");
+			});
+
+			mapObj.current.on("moveend", () => {
+				viewport.classList.remove("map-dragging");
+			});
+		});
+	}, []);
+
+	useEffect(() => {
+		if (!mapRef.current) return;
+		if (!mapObj.current) return;
+
+		const observer = new ResizeObserver(() => {
+			mapObj.current.updateSize();
+		});
+
+		observer.observe(mapRef.current);
+
+		return () => observer.disconnect();
 	}, []);
 
 	/* ===== resize ===== */
@@ -158,12 +211,8 @@ export default function OpenLayersMap({ showMap, locations }) {
 	return (
 		<div
 			ref={mapRef}
-			style={{
-				position: "relative",
-				height: showMap ? "400px" : "0",
-				width: "100%",
-				overflow: "hidden",
-			}}
+			style={{ height: showMap ? "400px" : "0" }}
+			className="rounded-sm mt-4 relative w-full overflow-hidden"
 			onPointerDown={(e) => handlePointerDown(e, holdTimer)}
 			onPointerUp={clearHoldTimer(holdTimer)}
 			onPointerLeave={clearHoldTimer(holdTimer)}

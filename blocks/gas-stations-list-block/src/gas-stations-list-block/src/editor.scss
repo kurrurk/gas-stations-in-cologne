@@ -50,4 +50,24 @@
 			@apply pointer-events-none;
 		}
 	}
+	.block-content {
+		.ol-viewport,
+		.ol-viewport.ol-grab,
+		.ol-viewport.ol-grabbing {
+			cursor: default !important;
+		}
+
+		.ol-viewport.map-draggable {
+			cursor: grab !important;
+		}
+
+		.ol-viewport.map-draggable.map-dragging {
+			cursor: grabbing !important;
+		}
+		.gas-stations-grid {
+			.gas-station_card-title {
+				@apply my-0;
+			}
+		}
+	}
 }
