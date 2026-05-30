@@ -7,18 +7,18 @@
 	"category": "widgets",
 	"icon": "smiley",
 	"description": "Test assignment for Scopevisio.",
-	"keywords": [ "gas", "station" ],
+	"keywords": ["gas", "station"],
 	"supports": {
 		"html": false,
 		"spacing": {
 			"padding": true
 		},
-		"align": [ "wide", "full" ]
+		"align": ["wide", "full"]
 	},
 	"attributes": {
 		"columns": {
-			"type": "number",
-			"default": 3
+			"type": "string",
+			"default": "grid-cols-3"
 		},
 		"showMap": {
 			"type": "boolean",

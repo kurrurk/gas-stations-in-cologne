@@ -26,8 +26,8 @@ return array(
 		),
 		'attributes' => array(
 			'columns' => array(
-				'type' => 'number',
-				'default' => 3
+				'type' => 'string',
+				'default' => 'grid-cols-3'
 			),
 			'showMap' => array(
 				'type' => 'boolean',

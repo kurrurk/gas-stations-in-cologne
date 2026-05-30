@@ -17,9 +17,9 @@ __webpack_require__.r(__webpack_exports__);
 
 function GasStationCard() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
-    className: "gas-station_card bg-base-100 shadow-sm rounded-sm",
+    className: "gas-station_card border border-base-100 bg-base-100 shadow-sm rounded-sm",
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
-      className: "card-body p-4",
+      className: "card-body font-sans p-4",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("h2", {
         className: "gas-station_card-title",
         children: "Card title!"
@@ -309,7 +309,7 @@ function Edit({
   } = attributes;
   const onChangeColumns = newColumns => {
     setAttributes({
-      columns: parseInt(newColumns, 10)
+      columns: newColumns
     });
   };
   const onChangeColorTheme = newColorTheme => {
@@ -351,19 +351,19 @@ function Edit({
           value: columns,
           options: [{
             label: "1 column",
-            value: 12
+            value: "grid-cols-1"
           }, {
             label: "2 columns",
-            value: 6
+            value: "grid-cols-2"
           }, {
             label: "3 columns",
-            value: 4
+            value: "grid-cols-3"
           }, {
             label: "4 columns",
-            value: 3
+            value: "grid-cols-4"
           }, {
             label: "6 columns",
-            value: 2
+            value: "grid-cols-6"
           }],
           onChange: onChangeColumns
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
@@ -459,7 +459,7 @@ function Edit({
           showMap: showMap,
           locations: posts
         }), posts && safePosts.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-          className: "gas-stations-grid grid grid-cols-4 gap-2 mt-4 p-3 rounded-sm border border-accent border-dashed",
+          className: `gas-stations-grid grid ${columns} gap-2 mt-4 p-3 rounded-sm border border-accent border-dashed`,
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_components_Card_Card__WEBPACK_IMPORTED_MODULE_9__["default"], {})]
         })]
       })]
@@ -54007,7 +54007,7 @@ function multiSelect(arr, left, right, n, compare) {
   \************************************************/
 (module) {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/gas-stations-list-block","version":"0.1.0","title":"Gas Stations List Block","category":"widgets","icon":"smiley","description":"Test assignment for Scopevisio.","keywords":["gas","station"],"supports":{"html":false,"spacing":{"padding":true},"align":["wide","full"]},"attributes":{"columns":{"type":"number","default":3},"showMap":{"type":"boolean","default":false},"colorTheme":{"type":"string","default":"light"}},"textdomain":"gas-stations-list-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"create-block/gas-stations-list-block","version":"0.1.0","title":"Gas Stations List Block","category":"widgets","icon":"smiley","description":"Test assignment for Scopevisio.","keywords":["gas","station"],"supports":{"html":false,"spacing":{"padding":true},"align":["wide","full"]},"attributes":{"columns":{"type":"string","default":"grid-cols-3"},"showMap":{"type":"boolean","default":false},"colorTheme":{"type":"string","default":"light"}},"textdomain":"gas-stations-list-block","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","viewScript":"file:./view.js"}');
 
 /***/ }
 

@@ -65,8 +65,12 @@
 			cursor: grabbing !important;
 		}
 		.gas-stations-grid {
-			.gas-station_card-title {
-				@apply my-0;
+			.gas-station_card {
+				.card-body {
+					.gas-station_card-title, p {
+						@apply my-0;
+					}
+				}
 			}
 		}
 	}

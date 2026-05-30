@@ -19,7 +19,7 @@ export default function Edit({ attributes, setAttributes }) {
 	// Settings Fields
 	const { columns, colorTheme, showMap } = attributes;
 	const onChangeColumns = (newColumns) => {
-		setAttributes({ columns: parseInt(newColumns, 10) });
+		setAttributes({ columns: newColumns });
 	};
 	const onChangeColorTheme = (newColorTheme) => {
 		setAttributes({ colorTheme: newColorTheme });
@@ -62,11 +62,11 @@ export default function Edit({ attributes, setAttributes }) {
 						label="Columns"
 						value={columns}
 						options={[
-							{ label: "1 column", value: 12 },
-							{ label: "2 columns", value: 6 },
-							{ label: "3 columns", value: 4 },
-							{ label: "4 columns", value: 3 },
-							{ label: "6 columns", value: 2 },
+							{ label: "1 column", value: "grid-cols-1" },
+							{ label: "2 columns", value: "grid-cols-2" },
+							{ label: "3 columns", value: "grid-cols-3" },
+							{ label: "4 columns", value: "grid-cols-4" },
+							{ label: "6 columns", value: "grid-cols-6" },
 						]}
 						onChange={onChangeColumns}
 					/>
@@ -152,7 +152,9 @@ export default function Edit({ attributes, setAttributes }) {
 					)}
 					<OpenLayersMap showMap={showMap} locations={posts} />
 					{posts && safePosts.length > 0 && (
-						<div className="gas-stations-grid grid grid-cols-4 gap-2 mt-4 p-3 rounded-sm border border-accent border-dashed">
+						<div
+							className={`gas-stations-grid grid ${columns} gap-2 mt-4 p-3 rounded-sm border border-accent border-dashed`}
+						>
 							<GasStationCard />
 							<GasStationCard />
 							<GasStationCard />
